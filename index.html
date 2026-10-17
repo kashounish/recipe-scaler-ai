@@ -1,0 +1,1055 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Recipe Scaler Studio - Professional Kitchen Portion & Culinary Suite</title>
+    <meta
+      name="description"
+      content="Professional recipe portion and culinary calculator. Precision scaling, cake pan sizing, unit conversion, smart cooking timers, and chef AI assistant."
+    />
+    <meta property="og:title" content="Recipe Scaler Studio - Professional Kitchen Suite" />
+    <meta
+      property="og:description"
+      content="Professional recipe portion and culinary calculator. Precision scaling, cake pan sizing, unit conversion, smart cooking timers, and chef AI assistant."
+    />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <!-- External Stylesheet (CSS) -->
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+  <body>
+    <!-- REALISTIC BACKGROUND & AMBIENT CANVAS EMBERS -->
+    <div class="bg-backdrop" id="bgBackdrop" aria-hidden="true"></div>
+    <div class="bg-tint" aria-hidden="true"></div>
+    <canvas id="embersCanvas" aria-hidden="true"></canvas>
+
+    <!-- MAIN VIEWPORT -->
+    <div class="app-layout">
+      <div class="stage-card" id="stageCard">
+
+        <!-- HEADER -->
+        <header class="app-header">
+          <div class="brand">
+            <div class="brand-badge" aria-hidden="true">
+              <svg viewBox="0 0 24 24">
+                <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+                <circle cx="12" cy="12" r="3.2"></circle>
+              </svg>
+            </div>
+            <div class="brand-headings">
+              <h1>
+                Recipe <span class="gradient-title-word">Scaler</span>
+                <span class="badge-version">Pro Studio</span>
+              </h1>
+              <p>Precision culinary portion scaling, pan sizing, and chef AI studio</p>
+            </div>
+          </div>
+
+          <div class="header-actions">
+            <!-- AI PASTE / IMPORT BUTTON -->
+            <button
+              type="button"
+              class="btn-tool"
+              style="background: linear-gradient(135deg, rgba(234, 88, 12, 0.12), rgba(147, 51, 234, 0.12)); border-color: rgba(234, 88, 12, 0.5); color: var(--primary);"
+              onclick="openAiImportModal()"
+              title="Auto-import recipe from raw text using AI"
+            >
+              ✨ AI Paste Recipe
+            </button>
+
+            <!-- CHEF AI CHAT SHORTCUT -->
+            <button
+              type="button"
+              class="btn-tool"
+              onclick="switchSuiteTab('aiTab')"
+              title="Open Chef AI Consultation"
+            >
+              👨‍🍳 Chef AI
+            </button>
+
+            <!-- AUDIO SFX TOGGLE BUTTON -->
+            <button
+              type="button"
+              id="soundToggleBtn"
+              class="icon-action-btn"
+              title="Toggle Kitchen Sound Effects"
+              aria-label="Toggle sound effects"
+            >
+              <svg id="soundOnIcon" viewBox="0 0 24 24">
+                <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+                <path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+                <path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path>
+              </svg>
+              <svg id="soundOffIcon" style="display: none;" viewBox="0 0 24 24">
+                <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+                <line x1="23" y1="9" x2="17" y2="15"></line>
+                <line x1="17" y1="9" x2="23" y2="15"></line>
+              </svg>
+            </button>
+
+            <!-- CULINARY WALLPAPER TOGGLE BUTTON -->
+            <button
+              type="button"
+              id="wallpaperToggleBtn"
+              class="icon-action-btn"
+              title="Switch Kitchen Wallpaper (Artisan Bakery / Chef Studio)"
+              onclick="toggleWallpaper()"
+              aria-label="Switch culinary background image"
+            >
+              🖼️
+            </button>
+
+            <!-- DARK MODE TOGGLE BUTTON -->
+            <button
+              type="button"
+              id="themeToggleBtn"
+              class="icon-action-btn"
+              title="Toggle theme (Light / Dark)"
+              aria-label="Toggle dark mode"
+            >
+              <svg id="sunIcon" style="display: none;" viewBox="0 0 24 24">
+                <circle cx="12" cy="12" r="5"></circle>
+                <line x1="12" y1="1" x2="12" y2="3"></line>
+                <line x1="12" y1="21" x2="12" y2="23"></line>
+                <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                <line x1="1" y1="12" x2="3" y2="12"></line>
+                <line x1="21" y1="12" x2="23" y2="12"></line>
+                <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+              </svg>
+              <svg id="moonIcon" viewBox="0 0 24 24">
+                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+              </svg>
+            </button>
+          </div>
+        </header>
+
+        <!-- SUITE EXTENDED TABS -->
+        <nav class="suite-nav" aria-label="Kitchen suite navigation">
+          <button type="button" class="nav-tab-btn active" onclick="switchSuiteTab('scalerTab')">
+            ⚖️ 1. Recipe Scaler
+          </button>
+          <button type="button" class="nav-tab-btn" onclick="switchSuiteTab('converterTab')">
+            📏 2. Unit & Temp Converter
+          </button>
+          <button type="button" class="nav-tab-btn" onclick="switchSuiteTab('panTab')">
+            🎂 3. Cake Pan Scaler
+          </button>
+          <button type="button" class="nav-tab-btn" onclick="switchSuiteTab('subsTab')">
+            🥑 4. Substitutions Guide
+          </button>
+          <button type="button" class="nav-tab-btn" onclick="switchSuiteTab('cookbookTab')">
+            📖 5. Saved Recipe Book (<span id="savedCount">0</span>)
+          </button>
+          <button type="button" class="nav-tab-btn" onclick="switchSuiteTab('aiTab')" style="color: var(--primary);">
+            ✨ 6. Chef AI Assistant
+          </button>
+        </nav>
+
+        <!-- PRESETS BAR -->
+        <div class="presets-section" id="presetsBar">
+          <span class="presets-label">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+            </svg>
+            Quick Presets:
+          </span>
+          <div class="preset-chips-wrap">
+            <button type="button" class="chip-btn" id="presetPancakes">🥞 Fluffy Pancakes (4 &rarr; 8)</button>
+            <button type="button" class="chip-btn" id="presetCookies">🍪 Chocolate Chip Cookies (12 &rarr; 24)</button>
+            <button type="button" class="chip-btn" id="presetPasta">🍝 Basil Pesto Pasta (2 &rarr; 6)</button>
+            <button type="button" class="chip-btn ai-chip" onclick="openAiImportModal()">✨ AI Auto-Fill</button>
+            <button type="button" class="chip-btn chip-reset" id="resetBtn">✕ Clear All</button>
+          </div>
+        </div>
+
+        <!-- STRICT ERROR ALERT BANNER -->
+        <div id="errorAlert" class="alert-error" role="alert" aria-live="assertive">
+          <svg viewBox="0 0 24 24">
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="12" y1="8" x2="12" y2="12"></line>
+            <line x1="12" y1="16" x2="12.01" y2="16"></line>
+          </svg>
+          <div class="alert-content">
+            <h4>Calculation Error</h4>
+            <p id="errorMessage">
+              Both "Servings Recipe Makes" and "Servings Wanted" must be numbers greater than 0.
+            </p>
+          </div>
+        </div>
+
+        <!-- TAB 1: MAIN RECIPE SCALER -->
+        <div id="scalerTab" class="tab-panel active">
+          <main class="scaler-body">
+            <form id="recipeForm" onsubmit="event.preventDefault(); handleScaleRecipe();">
+              <!-- TOP THREE INPUTS: DISH NAME, SERVINGS MAKES, SERVINGS WANTED -->
+              <div class="top-inputs-grid">
+                <div class="input-wrapper">
+                  <label for="dishName" class="field-label">
+                    <span>Dish Name</span>
+                  </label>
+                  <input
+                    type="text"
+                    id="dishName"
+                    class="field-input"
+                    placeholder="e.g., Homemade Apple Pie"
+                    autocomplete="off"
+                  />
+                  <span class="field-hint">Name of your dish or bake</span>
+                </div>
+
+                <div class="input-wrapper">
+                  <label for="servingsOriginal" class="field-label">
+                    <span>Servings Recipe Makes <span class="required-star">*</span></span>
+                  </label>
+                  <input
+                    type="number"
+                    id="servingsOriginal"
+                    class="field-input"
+                    step="any"
+                    placeholder="e.g., 4"
+                    min="0.01"
+                    required
+                  />
+                  <span class="field-hint">Original batch yield</span>
+                </div>
+
+                <div class="input-wrapper">
+                  <label for="servingsWanted" class="field-label">
+                    <span>Servings Wanted <span class="required-star">*</span></span>
+                  </label>
+                  <input
+                    type="number"
+                    id="servingsWanted"
+                    class="field-input"
+                    step="any"
+                    placeholder="e.g., 8"
+                    min="0.01"
+                    required
+                  />
+                  <div class="multipliers-cluster">
+                    <span class="mult-label">Quick:</span>
+                    <button type="button" class="mult-btn" onclick="applyMultiplier(0.5)">0.5&times;</button>
+                    <button type="button" class="mult-btn" onclick="applyMultiplier(1)">1&times;</button>
+                    <button type="button" class="mult-btn" onclick="applyMultiplier(2)">2&times;</button>
+                    <button type="button" class="mult-btn" onclick="applyMultiplier(3)">3&times;</button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- THREE INGREDIENTS SECTION (NAME, AMOUNT, UNIT) -->
+              <div style="margin-top: 0.5rem;">
+                <div class="ingredients-title-bar">
+                  <h2 class="section-heading">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+                    </svg>
+                    Three Ingredients (Original Amounts)
+                  </h2>
+                </div>
+
+                <div class="ingredients-stack">
+                  <!-- INGREDIENT 1 -->
+                  <div class="ingredient-item">
+                    <div class="ingredient-number-disc">1</div>
+                    <div class="input-wrapper">
+                      <label for="ing1_name" class="field-hint" style="font-weight: 700;">Ingredient Name</label>
+                      <input
+                        type="text"
+                        id="ing1_name"
+                        class="field-input"
+                        placeholder="e.g., All-Purpose Flour"
+                      />
+                    </div>
+                    <div class="input-wrapper">
+                      <label for="ing1_amount" class="field-hint" style="font-weight: 700;">Original Amount</label>
+                      <input
+                        type="number"
+                        id="ing1_amount"
+                        class="field-input"
+                        step="any"
+                        placeholder="e.g., 2"
+                        min="0"
+                      />
+                    </div>
+                    <div class="input-wrapper">
+                      <label for="ing1_unit" class="field-hint" style="font-weight: 700;">Unit</label>
+                      <input
+                        type="text"
+                        id="ing1_unit"
+                        class="field-input"
+                        placeholder="e.g., cups / g / tbsp"
+                      />
+                    </div>
+                  </div>
+
+                  <!-- INGREDIENT 2 -->
+                  <div class="ingredient-item">
+                    <div class="ingredient-number-disc">2</div>
+                    <div class="input-wrapper">
+                      <label for="ing2_name" class="field-hint" style="font-weight: 700;">Ingredient Name</label>
+                      <input
+                        type="text"
+                        id="ing2_name"
+                        class="field-input"
+                        placeholder="e.g., Granulated Sugar"
+                      />
+                    </div>
+                    <div class="input-wrapper">
+                      <label for="ing2_amount" class="field-hint" style="font-weight: 700;">Original Amount</label>
+                      <input
+                        type="number"
+                        id="ing2_amount"
+                        class="field-input"
+                        step="any"
+                        placeholder="e.g., 100"
+                        min="0"
+                      />
+                    </div>
+                    <div class="input-wrapper">
+                      <label for="ing2_unit" class="field-hint" style="font-weight: 700;">Unit</label>
+                      <input
+                        type="text"
+                        id="ing2_unit"
+                        class="field-input"
+                        placeholder="e.g., grams"
+                      />
+                    </div>
+                  </div>
+
+                  <!-- INGREDIENT 3 -->
+                  <div class="ingredient-item">
+                    <div class="ingredient-number-disc">3</div>
+                    <div class="input-wrapper">
+                      <label for="ing3_name" class="field-hint" style="font-weight: 700;">Ingredient Name</label>
+                      <input
+                        type="text"
+                        id="ing3_name"
+                        class="field-input"
+                        placeholder="e.g., Whole Milk"
+                      />
+                    </div>
+                    <div class="input-wrapper">
+                      <label for="ing3_amount" class="field-hint" style="font-weight: 700;">Original Amount</label>
+                      <input
+                        type="number"
+                        id="ing3_amount"
+                        class="field-input"
+                        step="any"
+                        placeholder="e.g., 1.5"
+                        min="0"
+                      />
+                    </div>
+                    <div class="input-wrapper">
+                      <label for="ing3_unit" class="field-hint" style="font-weight: 700;">Unit</label>
+                      <input
+                        type="text"
+                        id="ing3_unit"
+                        class="field-input"
+                        placeholder="e.g., cups / ml"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- CHEF METHOD & NOTES -->
+              <div class="recipe-notes-box">
+                <div class="recipe-notes-header">
+                  <span>📝 Chef Notes & Method Instructions (Optional)</span>
+                  <span style="font-size: 0.72rem; color: var(--text-muted);">Auto-saved locally</span>
+                </div>
+                <textarea
+                  id="recipeNotes"
+                  class="recipe-textarea"
+                  placeholder="e.g., Bake at 350°F (175°C) for 25 minutes. Note: scaling portion size may slightly alter cooking time for stovetop dishes."
+                ></textarea>
+              </div>
+
+              <!-- ACTION BUTTON DOCK -->
+              <div class="action-dock">
+                <button type="submit" id="calculateBtn" class="btn-cta">
+                  <svg viewBox="0 0 24 24">
+                    <polyline points="20 6 9 17 4 12"></polyline>
+                  </svg>
+                  Calculate Scaled Recipe
+                </button>
+                <button type="button" class="btn-secondary" onclick="saveRecipeToCookbook()">
+                  💾 Save to Book
+                </button>
+                <button type="button" id="clearBtn" class="btn-secondary" onclick="clearForm()">
+                  Clear Fields
+                </button>
+              </div>
+            </form>
+
+            <div class="formula-strip">
+              <span>Scaling Formula:</span>
+              <code>(Original Amount &times; Servings Wanted) &divide; Servings Recipe Makes</code>
+            </div>
+
+            <!-- RESULTS SECTION -->
+            <section id="resultsSection" class="results-showcase" aria-label="Scaled Recipe Results">
+              <div class="results-header-bar">
+                <h2 class="section-heading">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                    <polyline points="14 2 14 8 20 8"></polyline>
+                    <line x1="16" y1="13" x2="8" y2="13"></line>
+                    <line x1="16" y1="17" x2="8" y2="17"></line>
+                    <polyline points="10 9 9 9 8 9"></polyline>
+                  </svg>
+                  Scaled Recipe Comparison
+                </h2>
+                <div class="results-tools">
+                  <span id="copyToast" class="copy-toast-msg">Copied to clipboard!</span>
+                  <!-- Display Mode Toggle (Fractions vs Decimals) -->
+                  <button type="button" class="btn-tool" id="fractionToggleBtn" onclick="toggleFractionDisplay()">
+                    ½ Toggle Fractions
+                  </button>
+                  <!-- AI Nutrition Button -->
+                  <button type="button" class="btn-tool" style="color: var(--primary); font-weight: 700;" onclick="openNutritionModal()">
+                    🥗 AI Nutrition
+                  </button>
+                  <button type="button" class="btn-tool" onclick="copyRecipeToClipboard()">
+                    📋 Copy Scaled List
+                  </button>
+                  <button type="button" class="btn-tool" style="background: var(--primary-light); color: var(--primary); font-weight: 700; border-color: var(--primary-glow);" onclick="exportRecipePDF()" title="Export formatted PDF file for kitchen printing">
+                    📄 Export PDF
+                  </button>
+                  <button type="button" class="btn-tool" onclick="window.print()" title="Print physical kitchen recipe card">
+                    🖨️ Print Card
+                  </button>
+                </div>
+              </div>
+
+              <!-- SUMMARY BANNER -->
+              <div class="summary-banner">
+                <div class="summary-info">
+                  <h3 id="resultDishTitle">Dish Name</h3>
+                  <p id="resultServingsSummary">Scaling from 4 servings to 8 servings</p>
+                </div>
+                <div class="multiplier-dial">
+                  <div class="multiplier-icon-ring">&times;</div>
+                  <div>
+                    <div style="font-size: 0.72rem; font-weight: 800; text-transform: uppercase; color: var(--text-muted);">
+                      Multiplier
+                    </div>
+                    <div class="multiplier-val-text" id="resultMultiplierVal">2.00x</div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- COMPARISON TABLE -->
+              <div class="table-box">
+                <table class="comparison-table" id="comparisonTable">
+                  <thead>
+                    <tr>
+                      <th>#</th>
+                      <th>Ingredient</th>
+                      <th>Original Recipe</th>
+                      <th>Scaled Recipe</th>
+                      <th>Adjustment</th>
+                    </tr>
+                  </thead>
+                  <tbody id="resultsTableBody">
+                    <!-- Dynamic -->
+                  </tbody>
+                </table>
+              </div>
+
+              <!-- LIVE SHOPPING CHECKLIST -->
+              <div class="checklist-card" id="shoppingChecklistCard">
+                <div class="checklist-header">
+                  <span>🛒 Interactive Kitchen Prep Checklist</span>
+                  <span style="font-size: 0.75rem; color: var(--text-muted); font-weight: 400;">(Check off as you measure)</span>
+                </div>
+                <div class="checklist-items" id="checklistItemsList">
+                  <!-- Populated by JS -->
+                </div>
+              </div>
+
+              <!-- CHEF AI QUICK CONSULTATION ACTIONS -->
+              <div class="ai-quick-card" style="margin-top: 1.25rem;">
+                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.5rem;">
+                  <span style="font-weight: 800; font-size: 0.95rem; color: var(--primary); display: flex; align-items: center; gap: 0.4rem;">
+                    ✨ Chef AI Assistant Insights
+                  </span>
+                  <span style="font-size: 0.72rem; color: var(--text-muted);">Gemini Culinary Guidance</span>
+                </div>
+                <p style="font-size: 0.84rem; color: var(--text-secondary); margin-bottom: 0.75rem;">
+                  Need chef advice for this scaled batch? Pick a topic or chat directly:
+                </p>
+                <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+                  <button type="button" class="btn-chip-ai" onclick="askChefQuick('scaling')">
+                    🔥 Will this change cooking time or oven heat?
+                  </button>
+                  <button type="button" class="btn-chip-ai" onclick="askChefQuick('subs')">
+                    🥑 Suggest ingredient substitutions
+                  </button>
+                  <button type="button" class="btn-chip-ai" onclick="askChefQuick('steps')">
+                    👨‍🍳 Generate step-by-step cooking method
+                  </button>
+                </div>
+              </div>
+            </section>
+
+            <!-- DEDICATED PHYSICAL KITCHEN PRINT CARD (Optimized for Paper & PDF Printing) -->
+            <div id="kitchenPrintCard" class="kitchen-print-card" aria-hidden="true">
+              <div class="print-card-header">
+                <div>
+                  <h1 id="printDishTitle">Recipe Title</h1>
+                  <p class="print-subtitle">Scaled Kitchen Recipe Card &bull; Recipe Scaler Studio</p>
+                </div>
+                <div class="print-stamp">
+                  <div class="print-stamp-mult" id="printMultiplierVal">2.00x</div>
+                  <div class="print-stamp-label">Multiplier</div>
+                </div>
+              </div>
+
+              <div class="print-meta-grid">
+                <div class="print-meta-item">
+                  <span class="print-meta-label">Original Yield:</span>
+                  <span class="print-meta-val" id="printServingsOrig">4 Servings</span>
+                </div>
+                <div class="print-meta-item">
+                  <span class="print-meta-label">Scaled Yield:</span>
+                  <span class="print-meta-val" id="printServingsWanted">8 Servings</span>
+                </div>
+                <div class="print-meta-item">
+                  <span class="print-meta-label">Date:</span>
+                  <span class="print-meta-val" id="printDate">2026-10-17</span>
+                </div>
+              </div>
+
+              <h2 class="print-section-title">Scaled Ingredients &amp; Prep Checklist</h2>
+              <table class="print-table">
+                <thead>
+                  <tr>
+                    <th style="width: 50px; text-align: center;">Prep</th>
+                    <th>Ingredient</th>
+                    <th style="width: 170px; text-align: right;">Scaled Amount</th>
+                    <th style="width: 140px; text-align: right;">Original (1x)</th>
+                  </tr>
+                </thead>
+                <tbody id="printIngredientsBody">
+                  <!-- Dynamic Rows with checkboxes -->
+                </tbody>
+              </table>
+
+              <div class="print-notes-section">
+                <h3 class="print-notes-title">Chef Method &amp; Cooking Instructions</h3>
+                <div class="print-notes-body" id="printNotesContent">
+                  No additional notes specified.
+                </div>
+              </div>
+
+              <div class="print-footer-strip">
+                <div>
+                  <strong>Kitchen Quick Reference:</strong> 1 Cup = 16 Tbsp = 240 ml &bull; 1 Tbsp = 3 Tsp &bull; 350&deg;F = 175&deg;C &bull; 375&deg;F = 190&deg;C
+                </div>
+                <div style="margin-top: 4px; font-size: 8pt; color: #666;">
+                  Printed from Recipe Scaler Studio &mdash; Precision Culinary Portion Calculator
+                </div>
+              </div>
+            </div>
+
+            <!-- ADVANCED CUSTOM KITCHEN COOKING TIMER -->
+            <div class="kitchen-timer-dock" id="kitchenTimerDock">
+              <div class="timer-dock-top">
+                <div class="timer-task-wrap">
+                  <span style="font-size: 1.15rem;">⏱️</span>
+                  <input
+                    type="text"
+                    id="timerTaskName"
+                    class="timer-task-input"
+                    placeholder="Task label (e.g. Sourdough Proof, Steak Sear, Pasta Al Dente)..."
+                    value="Kitchen Cooking Timer"
+                  />
+                </div>
+                <div class="timer-audio-toggles">
+                  <label title="Toggle ticking sound every second">
+                    <input type="checkbox" id="timerTickToggle" onchange="toggleTimerTick(this.checked)">
+                    <span>⏱️ Tick Sound</span>
+                  </label>
+                  <button type="button" class="btn-tool" style="padding: 0.25rem 0.65rem; font-size: 0.78rem;" onclick="testTimerAlarm()" title="Play a sample of the culinary timer alarm chime">
+                    🔔 Test Sound
+                  </button>
+                  <span style="font-size: 0.85rem; font-weight: 700; color: var(--primary);" id="timerStatusLbl">Ready</span>
+                </div>
+              </div>
+
+              <div class="timer-dock-main">
+                <div class="timer-digital-box">
+                  <div class="timer-display" id="timerDisplay">15:00</div>
+                  <div class="timer-progress-track">
+                    <div class="timer-progress-fill" id="timerProgressFill" style="width: 100%;"></div>
+                  </div>
+                </div>
+
+                <!-- Custom time inputs -->
+                <div style="display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;">
+                  <div class="timer-custom-inputs">
+                    <input type="number" id="customTimerMin" class="timer-num-input" min="0" max="999" value="15" title="Minutes" onchange="applyCustomTimerInputs()">
+                    <span style="font-size: 0.82rem; font-weight: 700; color: var(--text-muted);">min</span>
+                    <span style="font-weight: 800; color: var(--text-muted);">:</span>
+                    <input type="number" id="customTimerSec" class="timer-num-input" min="0" max="59" value="0" title="Seconds" onchange="applyCustomTimerInputs()">
+                    <span style="font-size: 0.82rem; font-weight: 700; color: var(--text-muted);">sec</span>
+                  </div>
+                  <button type="button" class="btn-tool" onclick="applyCustomTimerInputs()" title="Set this custom duration">
+                    Set Time
+                  </button>
+                </div>
+
+                <!-- Timer controls -->
+                <div class="timer-controls">
+                  <button type="button" class="btn-cta" id="timerToggleBtn" onclick="toggleKitchenTimer()" style="padding: 0.55rem 1.25rem; font-size: 0.92rem;">
+                    ▶ Start
+                  </button>
+                  <button type="button" class="btn-tool" onclick="addTimerSeconds(60)" title="Add 1 minute to current timer">
+                    +1 Min
+                  </button>
+                  <button type="button" class="btn-secondary" onclick="resetKitchenTimer()" style="padding: 0.55rem 0.95rem; font-size: 0.92rem;">
+                    Reset
+                  </button>
+                </div>
+              </div>
+
+              <!-- Culinary timer presets bar -->
+              <div class="timer-presets-wrap">
+                <span style="font-size: 0.75rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase;">Landmark Presets:</span>
+                <button type="button" class="timer-chip" onclick="setCustomTimer(6, 30, '🥚 Soft Boiled Egg')">🥚 Soft Egg (6m 30s)</button>
+                <button type="button" class="timer-chip" onclick="setCustomTimer(3, 0, '🥩 Steak Sear')">🥩 Steak Sear (3m)</button>
+                <button type="button" class="timer-chip" onclick="setCustomTimer(9, 0, '🍝 Pasta Al Dente')">🍝 Pasta Al Dente (9m)</button>
+                <button type="button" class="timer-chip" onclick="setCustomTimer(15, 0, '🍲 Simmer Sauce')">🍲 Simmer Sauce (15m)</button>
+                <button type="button" class="timer-chip" onclick="setCustomTimer(25, 0, '🎂 Cake Bake')">🎂 Cake Bake (25m)</button>
+                <button type="button" class="timer-chip" onclick="setCustomTimer(45, 0, '🥖 Sourdough Proof')">🥖 Dough Proof (45m)</button>
+              </div>
+            </div>
+          </main>
+        </div>
+
+        <!-- TAB 2: UNIT & TEMPERATURE CONVERTER -->
+        <div id="converterTab" class="tab-panel">
+          <div style="padding: 2rem;">
+            <div class="converter-tab-layout">
+              <!-- MAIN CONVERTERS COLUMN -->
+              <div class="converter-main-tools">
+                <div class="card-sub-tool">
+                  <h3>⚖️ Volume &amp; Weight Converter</h3>
+                  <p>Instant conversions for wet and dry culinary measurements.</p>
+
+                  <div class="converter-row">
+                    <input
+                      type="number"
+                      id="convFromVal"
+                      class="field-input"
+                      value="1"
+                      step="any"
+                      oninput="runUnitConversion()"
+                    />
+                    <select id="convFromUnit" class="field-input" onchange="runUnitConversion()">
+                      <option value="cup">Cups</option>
+                      <option value="tbsp">Tablespoons</option>
+                      <option value="tsp">Teaspoons</option>
+                      <option value="floz">Fl Oz</option>
+                      <option value="ml">Milliliters (ml)</option>
+                      <option value="g">Grams (g)</option>
+                      <option value="oz">Ounces (oz)</option>
+                      <option value="lb">Pounds (lb)</option>
+                    </select>
+                    <span style="font-weight: 800; font-size: 1.2rem; color: var(--primary); text-align: center;">=</span>
+                    <input
+                      type="text"
+                      id="convToVal"
+                      class="field-input"
+                      readonly
+                      style="font-weight: 800; color: var(--primary);"
+                    />
+                    <select id="convToUnit" class="field-input" onchange="runUnitConversion()">
+                      <option value="tbsp" selected>Tablespoons</option>
+                      <option value="cup">Cups</option>
+                      <option value="tsp">Teaspoons</option>
+                      <option value="floz">Fl Oz</option>
+                      <option value="ml">Milliliters (ml)</option>
+                      <option value="g">Grams (g)</option>
+                      <option value="oz">Ounces (oz)</option>
+                      <option value="lb">Pounds (lb)</option>
+                    </select>
+                  </div>
+
+                  <div class="quick-equivalents-grid">
+                    <div class="eq-card">
+                      <div class="eq-card-title">1 Cup</div>
+                      <div class="eq-card-val">16 Tbsp</div>
+                    </div>
+                    <div class="eq-card">
+                      <div class="eq-card-title">1 Tbsp</div>
+                      <div class="eq-card-val">3 Tsp</div>
+                    </div>
+                    <div class="eq-card">
+                      <div class="eq-card-title">1 Cup</div>
+                      <div class="eq-card-val">240 ml</div>
+                    </div>
+                    <div class="eq-card">
+                      <div class="eq-card-title">1 Fl Oz</div>
+                      <div class="eq-card-val">2 Tbsp (~30ml)</div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="card-sub-tool">
+                  <h3>🔥 Oven Temperature Converter</h3>
+                  <p>Convert baking heat between Fahrenheit, Celsius, and Gas Marks.</p>
+
+                  <div style="display: flex; gap: 0.75rem; align-items: center; margin-bottom: 1.25rem;">
+                    <div style="flex: 1;">
+                      <label class="field-hint" style="font-weight: 700;">Fahrenheit (&deg;F)</label>
+                      <input
+                        type="number"
+                        id="tempF"
+                        class="field-input"
+                        value="350"
+                        oninput="convertTempFromF()"
+                      />
+                    </div>
+                    <span style="font-weight: 800; font-size: 1.2rem; color: var(--primary); margin-top: 1rem;">&harr;</span>
+                    <div style="flex: 1;">
+                      <label class="field-hint" style="font-weight: 700;">Celsius (&deg;C)</label>
+                      <input
+                        type="number"
+                        id="tempC"
+                        class="field-input"
+                        value="175"
+                        oninput="convertTempFromC()"
+                      />
+                    </div>
+                  </div>
+
+                  <div style="background: var(--glass-bg); padding: 0.85rem; border-radius: var(--radius-sm); border: 1px solid var(--glass-border);">
+                    <div style="font-size: 0.8rem; font-weight: 700; color: var(--text-muted); margin-bottom: 0.4rem;">
+                      Standard Baking Landmarks:
+                    </div>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.4rem; font-size: 0.82rem;">
+                      <div>&bull; <strong>300&deg;F</strong> = 150&deg;C (Slow roast)</div>
+                      <div>&bull; <strong>350&deg;F</strong> = 175&deg;C (Standard cake)</div>
+                      <div>&bull; <strong>375&deg;F</strong> = 190&deg;C (Cookies / pies)</div>
+                      <div>&bull; <strong>425&deg;F</strong> = 220&deg;C (Crusty bread)</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- RECENT CONVERSIONS SIDEBAR (TRACKS LAST 5) -->
+              <aside class="recent-conv-sidebar" aria-label="Recent conversions history">
+                <div class="recent-conv-header">
+                  <div style="display: flex; align-items: center; gap: 0.4rem;">
+                    <span style="font-size: 1.15rem;">🕒</span>
+                    <h3 style="font-size: 1.05rem; font-weight: 800;">Recent Conversions</h3>
+                  </div>
+                  <button type="button" class="btn-clear-history" onclick="clearRecentConversions()" title="Clear recent history">
+                    Clear
+                  </button>
+                </div>
+                <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 0.85rem;">
+                  Last 5 conversions tracked automatically. Click any row to re-apply immediately.
+                </p>
+                <div id="recentConversionsList" class="recent-conv-list">
+                  <!-- Populated by JS -->
+                </div>
+              </aside>
+            </div>
+          </div>
+        </div>
+
+        <!-- TAB 3: CAKE PAN SCALER -->
+        <div id="panTab" class="tab-panel">
+          <div style="padding: 2rem;">
+            <div class="pan-scaler-container">
+              <div class="card-sub-tool">
+                <h3>🎂 Original Recipe Pan Size</h3>
+                <p>Enter the baking dish dimensions specified in your recipe.</p>
+
+                <div class="input-wrapper" style="margin-bottom: 0.75rem;">
+                  <label class="field-hint" style="font-weight: 700;">Pan Shape</label>
+                  <select id="pan1Shape" class="field-input" onchange="calculatePanScale()">
+                    <option value="round">Round Pan (Circle)</option>
+                    <option value="square">Square Pan</option>
+                    <option value="rectangle">Rectangular Pan</option>
+                  </select>
+                </div>
+
+                <div id="pan1Dims" style="display: flex; gap: 0.6rem;">
+                  <div style="flex: 1;">
+                    <label class="field-hint" style="font-weight: 700;">Diameter / Width (inches)</label>
+                    <input
+                      type="number"
+                      id="pan1DimA"
+                      class="field-input"
+                      value="8"
+                      min="1"
+                      step="any"
+                      oninput="calculatePanScale()"
+                    />
+                  </div>
+                  <div id="pan1DimBWrap" style="flex: 1; display: none;">
+                    <label class="field-hint" style="font-weight: 700;">Length (inches)</label>
+                    <input
+                      type="number"
+                      id="pan1DimB"
+                      class="field-input"
+                      value="8"
+                      min="1"
+                      step="any"
+                      oninput="calculatePanScale()"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <div class="card-sub-tool">
+                <h3>✨ Target / New Pan Size</h3>
+                <p>Enter the dish or tin you actually have in your kitchen.</p>
+
+                <div class="input-wrapper" style="margin-bottom: 0.75rem;">
+                  <label class="field-hint" style="font-weight: 700;">Target Shape</label>
+                  <select id="pan2Shape" class="field-input" onchange="calculatePanScale()">
+                    <option value="round">Round Pan (Circle)</option>
+                    <option value="square" selected>Square Pan</option>
+                    <option value="rectangle">Rectangular Pan</option>
+                  </select>
+                </div>
+
+                <div id="pan2Dims" style="display: flex; gap: 0.6rem;">
+                  <div style="flex: 1;">
+                    <label class="field-hint" style="font-weight: 700;">Diameter / Width (inches)</label>
+                    <input
+                      type="number"
+                      id="pan2DimA"
+                      class="field-input"
+                      value="8"
+                      min="1"
+                      step="any"
+                      oninput="calculatePanScale()"
+                    />
+                  </div>
+                  <div id="pan2DimBWrap" style="flex: 1; display: none;">
+                    <label class="field-hint" style="font-weight: 700;">Length (inches)</label>
+                    <input
+                      type="number"
+                      id="pan2DimB"
+                      class="field-input"
+                      value="8"
+                      min="1"
+                      step="any"
+                      oninput="calculatePanScale()"
+                    />
+                  </div>
+                </div>
+
+                <div class="pan-result-badge">
+                  <div style="font-size: 0.78rem; font-weight: 800; text-transform: uppercase; color: var(--text-muted);">
+                    Batter Scaling Multiplier:
+                  </div>
+                  <div class="pan-ratio-big" id="panScaleRatioText">1.27x</div>
+                  <div id="panScaleExplainer" style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 0.25rem;">
+                    Multiply all cake batter ingredients by 1.27
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- TAB 4: SUBSTITUTIONS GUIDE -->
+        <div id="subsTab" class="tab-panel">
+          <div style="padding: 2rem;">
+            <div style="margin-bottom: 1.35rem;">
+              <input
+                type="text"
+                id="subsSearchInput"
+                class="field-input"
+                placeholder="🔍 Search missing ingredient (e.g. Buttermilk, Egg, Heavy Cream, Cornstarch)..."
+                oninput="filterSubstitutions()"
+              />
+            </div>
+
+            <div class="subs-list" id="subsListContainer"></div>
+          </div>
+        </div>
+
+        <!-- TAB 5: SAVED RECIPES BOOK -->
+        <div id="cookbookTab" class="tab-panel">
+          <div style="padding: 2rem;">
+            <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.75rem;">
+              <div>
+                <h3 style="font-size: 1.35rem; font-weight: 800;">📖 My Scaled Recipe Book</h3>
+                <p style="font-size: 0.88rem; color: var(--text-muted);">Saved recipes stored safely in your browser storage.</p>
+              </div>
+              <button type="button" class="btn-tool" onclick="clearAllCookbook()">
+                🗑️ Clear All Saved
+              </button>
+            </div>
+
+            <div class="saved-recipes-grid" id="savedRecipesGrid"></div>
+          </div>
+        </div>
+
+        <!-- TAB 6: CHEF AI ASSISTANT -->
+        <div id="aiTab" class="tab-panel">
+          <div style="padding: 2rem;">
+            <div style="margin-bottom: 1.25rem;">
+              <h3 style="font-size: 1.35rem; font-weight: 800; display: flex; align-items: center; gap: 0.5rem;">
+                ✨ Chef AI Culinary Assistant
+                <span style="font-size: 0.72rem; font-weight: 800; background: var(--primary-light); color: var(--primary); padding: 0.2rem 0.5rem; border-radius: 9999px;">Gemini 3.8 Flash</span>
+              </h3>
+              <p style="font-size: 0.88rem; color: var(--text-muted); margin-top: 0.2rem;">
+                Ask any question about your dish, scaling nuances, ingredient replacements, cooking techniques, or wine pairings.
+              </p>
+            </div>
+
+            <!-- CHAT CONTAINER -->
+            <div class="ai-chat-box">
+              <div class="ai-chat-messages" id="aiChatMessages">
+                <!-- Welcome Message -->
+                <div class="ai-msg bot">
+                  <div class="ai-msg-avatar">👨‍🍳</div>
+                  <div class="ai-msg-content">
+                    <p><strong>Bonjour! I am Chef Gemini.</strong></p>
+                    <p style="margin-top: 0.35rem;">
+                      I can help you scale cooking temperatures, suggest replacements for out-of-stock ingredients, prevent baking disasters, or recommend cooking times for your current recipe.
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <!-- AI Quick Suggestions -->
+              <div class="ai-suggest-chips">
+                <span style="font-size: 0.72rem; font-weight: 800; color: var(--text-muted); text-transform: uppercase;">Quick Topics:</span>
+                <button type="button" class="btn-suggest-chip" onclick="sendAiPrompt('Will doubling this recipe double the baking or stovetop time?')">
+                  ⏱️ Cooking time rules
+                </button>
+                <button type="button" class="btn-suggest-chip" onclick="sendAiPrompt('What pantry ingredients can I substitute for the ingredients in this dish?')">
+                  🥑 Smart substitutions
+                </button>
+                <button type="button" class="btn-suggest-chip" onclick="sendAiPrompt('How should I adjust seasoning and salt when scaling up?')">
+                  🧂 Salt & spice scaling
+                </button>
+                <button type="button" class="btn-suggest-chip" onclick="sendAiPrompt('Can you provide detailed step-by-step cooking instructions for this dish?')">
+                  📝 Step-by-step method
+                </button>
+              </div>
+
+              <!-- CHAT INPUT FORM -->
+              <form class="ai-input-form" onsubmit="event.preventDefault(); handleAiSubmit();">
+                <input
+                  type="text"
+                  id="aiChatInput"
+                  class="field-input"
+                  placeholder="Ask Chef AI anything (e.g., 'How do I keep this moist when baking for 12?')..."
+                  autocomplete="off"
+                />
+                <button type="submit" id="aiSendBtn" class="btn-cta" style="min-height: 46px; padding: 0.75rem 1.4rem;">
+                  <span>Send</span>
+                  <svg viewBox="0 0 24 24" style="width: 18px; height: 18px;">
+                    <line x1="22" y1="2" x2="11" y2="13"></line>
+                    <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                  </svg>
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- AI SMART RECIPE IMPORT MODAL -->
+    <div class="modal-overlay" id="aiImportModal">
+      <div class="modal-card">
+        <div class="modal-header">
+          <h3>✨ AI Smart Recipe Import</h3>
+          <button type="button" class="modal-close-btn" onclick="closeAiImportModal()">&times;</button>
+        </div>
+        <p style="font-size: 0.88rem; color: var(--text-muted); margin-bottom: 1rem;">
+          Paste any raw recipe from a website, message, or notes. Chef AI will automatically extract the dish name, servings yield, and top ingredients.
+        </p>
+        <textarea
+          id="rawRecipeInput"
+          class="recipe-textarea"
+          style="min-height: 140px; margin-bottom: 1rem;"
+          placeholder="e.g.
+Grandma's Blueberry Muffins
+Makes 6 servings
+
+Ingredients:
+- 2 cups flour
+- 1 cup granulated sugar
+- 0.5 cups milk
+Bake at 375°F for 20 minutes."
+        ></textarea>
+        <div style="display: flex; gap: 0.75rem; justify-content: flex-end;">
+          <button type="button" class="btn-secondary" onclick="closeAiImportModal()">Cancel</button>
+          <button type="button" class="btn-cta" id="parseRecipeBtn" onclick="handleAiParseRecipe()">
+            ✨ Extract & Fill Scaler
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- AI NUTRITION FACTS MODAL -->
+    <div class="modal-overlay" id="nutritionModal">
+      <div class="modal-card">
+        <div class="modal-header">
+          <h3>🥗 Nutritional Facts per Serving</h3>
+          <button type="button" class="modal-close-btn" onclick="closeNutritionModal()">&times;</button>
+        </div>
+        <p style="font-size: 0.88rem; color: var(--text-muted);" id="nutritionSubtitle">
+          Estimated nutritional content based on current scaled portions.
+        </p>
+
+        <div class="nutrition-grid" id="nutritionContentGrid">
+          <div class="nutrient-card">
+            <div class="nutrient-val" id="nutriCalories">--</div>
+            <div class="nutrient-lbl">Calories</div>
+          </div>
+          <div class="nutrient-card">
+            <div class="nutrient-val" id="nutriProtein">--</div>
+            <div class="nutrient-lbl">Protein (g)</div>
+          </div>
+          <div class="nutrient-card">
+            <div class="nutrient-val" id="nutriCarbs">--</div>
+            <div class="nutrient-lbl">Carbs (g)</div>
+          </div>
+          <div class="nutrient-card">
+            <div class="nutrient-val" id="nutriFat">--</div>
+            <div class="nutrient-lbl">Fat (g)</div>
+          </div>
+          <div class="nutrient-card">
+            <div class="nutrient-val" id="nutriFiber">--</div>
+            <div class="nutrient-lbl">Fiber (g)</div>
+          </div>
+        </div>
+
+        <p style="font-size: 0.82rem; color: var(--text-muted); margin-top: 1.25rem; font-style: italic;" id="nutriSummary">
+          Calculating nutritional breakdown...
+        </p>
+      </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="app-footer">
+      <div>
+        <strong>Recipe Scaler Studio</strong> &mdash; Modern Flat Architecture
+      </div>
+      <div>
+        💡 <em>Chef's Rule: When doubling spices or salt, begin with 1.5&times; and taste before adding the full 2&times;.</em>
+      </div>
+    </footer>
+
+    <!-- External Script (JavaScript Module) -->
+    <script type="module" src="./script.js"></script>
+  </body>
+</html>

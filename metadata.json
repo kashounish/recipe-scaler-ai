@@ -1,0 +1,6 @@
+{
+  "name": "Recipe Scaler Studio",
+  "description": "Professional recipe portion and culinary calculator. Precision scaling, cake pan sizing, unit conversion, and chef AI assistant.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
